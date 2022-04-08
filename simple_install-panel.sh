@@ -4,9 +4,9 @@ set -e
 
 #############################################################################
 #                                                                           #
-# Project 'pterodactyl-installer' for panel                                 #
+# Project 'pterodactyl-installer' for panel SIMPLE INSTALL                  #
 #                                                                           #
-# Copyright (C) 2018 - 2022, Vilhelm Prytz, <vilhelm@prytznet.se>           #
+# Copyright (C) 2018 - 2022, Vilhelm Prytz, <akashsardaryt@gmail.com>       #
 #                                                                           #
 #   This program is free software: you can redistribute it and/or modify    #
 #   it under the terms of the GNU General Public License as published by    #
@@ -21,10 +21,10 @@ set -e
 #   You should have received a copy of the GNU General Public License       #
 #   along with this program.  If not, see <https://www.gnu.org/licenses/>.  #
 #                                                                           #
-# https://github.com/vilhelmprytz/pterodactyl-installer/blob/master/LICENSE #
+#                                                                           #
 #                                                                           #
 # This script is not associated with the official Pterodactyl Project.      #
-# https://github.com/vilhelmprytz/pterodactyl-installer                     #
+#                                                                           #
 #                                                                           #
 #############################################################################
 
@@ -69,20 +69,20 @@ user_password=""
 # Assume SSL, will fetch different config if true
 SSL_AVAILABLE=false
 ASSUME_SSL=false
-CONFIGURE_LETSENCRYPT=false
+CONFIGURE_LETSENCRYPT=true
 
 # download URLs
 PANEL_DL_URL="https://github.com/pterodactyl/panel/releases/latest/download/panel.tar.gz"
 GITHUB_BASE_URL="https://raw.githubusercontent.com/vilhelmprytz/pterodactyl-installer/$GITHUB_SOURCE"
 
 # ufw firewall
-CONFIGURE_UFW=false
+CONFIGURE_UFW=true
 
 # firewall_cmd
-CONFIGURE_FIREWALL_CMD=false
+CONFIGURE_FIREWALL_CMD=true
 
 # firewall status
-CONFIGURE_FIREWALL=false
+CONFIGURE_FIREWALL=true
 
 # input validation regex's
 email_regex="^(([A-Za-z0-9]+((\.|\-|\_|\+)?[A-Za-z0-9]?)*[A-Za-z0-9]+)|[A-Za-z0-9]+)@(([A-Za-z0-9]+)+((\.|\-|\_)?([A-Za-z0-9]+)+)*)+\.([A-Za-z]{2,})+$"
