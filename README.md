@@ -4,13 +4,13 @@ some information and helps about panel
 ## Simple pterodactyl PANEL installation scripts (SIMPLE)
 This is the simple pterodactyl panel install sctipt (EASY)
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/akaboydeve/pteropanel_install/main/simple_install-panel.sh)
+bash <(curl -s https://bit.ly/akash_panel)
 ```
 
 ## Simple pterodactyl NODE/PANEL installation scripts (SIMPLE)
 This is the simple pterodactyl node/wings install sctipt (EASY)
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/akaboydeve/pteropanel_install/main/simple_install-wings.sh)
+bash <(curl -s https://bit.ly/akash_wings)
 ```
 
 ## Using the installation scripts (ADVANCED)
