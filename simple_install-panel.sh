@@ -223,10 +223,10 @@ ask_letsencrypt() {
     print_warning "Let's Encrypt requires port 80/443 to be opened! You have opted out of the automatic firewall configuration; use this at your own risk (if port 80/443 is closed, the script will fail)!"
   fi
 
-  echo -e -n "* Do you want to automatically configure HTTPS using Let's Encrypt? (y/N): "
-  read -r CONFIRM_SSL
+  
+  CONFIRM_SSL=1
 
-  if [[ "$CONFIRM_SSL" =~ [Yy] ]]; then
+  if [[ "$CONFIRM_SSL" =~ [1] ]]; then
     CONFIGURE_LETSENCRYPT=true
     ASSUME_SSL=false
   fi
@@ -236,10 +236,10 @@ ask_assume_ssl() {
   echo "* Let's Encrypt is not going to be automatically configured by this script (user opted out)."
   echo "* You can 'assume' Let's Encrypt, which means the script will download a nginx configuration that is configured to use a Let's Encrypt certificate but the script won't obtain the certificate for you."
   echo "* If you assume SSL and do not obtain the certificate, your installation will not work."
-  echo -n "* Assume SSL or not? (y/N): "
-  read -r ASSUME_SSL_INPUT
+  echo -n "* Assuming SSL"
+  ASSUME_SSL_INPUT=1
 
-  [[ "$ASSUME_SSL_INPUT" =~ [Yy] ]] && ASSUME_SSL=true
+  [[ "$ASSUME_SSL_INPUT" =~ [1] ]] && ASSUME_SSL=true
   true
 }
 
@@ -255,19 +255,19 @@ check_FQDN_SSL() {
 ask_firewall() {
   case "$OS" in
   ubuntu | debian)
-    echo -e -n "* Do you want to automatically configure UFW (firewall)? (y/N): "
-    read -r CONFIRM_UFW
+    echo -e -n "* Automatically configuring UFW (firewall)"
+    CONFIRM_UFW=1
 
-    if [[ "$CONFIRM_UFW" =~ [Yy] ]]; then
+    if [[ "$CONFIRM_UFW" =~ [1] ]]; then
       CONFIGURE_UFW=true
       CONFIGURE_FIREWALL=true
     fi
     ;;
   centos)
     echo -e -n "* Do you want to automatically configure firewall-cmd (firewall)? (y/N): "
-    read -r CONFIRM_FIREWALL_CMD
+    CONFIRM_FIREWALL_CMD=
 
-    if [[ "$CONFIRM_FIREWALL_CMD" =~ [Yy] ]]; then
+    if [[ "$CONFIRM_FIREWALL_CMD" =~ [1] ]]; then
       CONFIGURE_FIREWALL_CMD=true
       CONFIGURE_FIREWALL=true
     fi
