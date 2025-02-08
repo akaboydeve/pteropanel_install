@@ -13,9 +13,9 @@ flush privileges;
 exit
 
 ## Normal Database Setup
-create user 'server'@'%' identified by 'Password1';
+create user 'user_server'@'%' identified by 'Password1';
 create database server;
-grant all privileges on server.* to 'server'@'%';
+grant all privileges on server.* to 'user_server'@'%';
 flush privileges;
 exit
 
