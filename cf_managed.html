@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifying your connection to HexoNode.com - Cloudflare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: background 2s ease-in-out;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #764ba2 0%, #f093fb 50%, #a855f7 100%);
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            z-index: -1;
+        }
+
+        body.gradient-2::before {
+            opacity: 1;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f093fb 0%, #a855f7 50%, #8b5cf6 100%);
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            z-index: -2;
+        }
+
+        body.gradient-3::after {
+            opacity: 1;
+        }
+
+        /* Animated background elements */
+        .bg-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatMove 12s ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        .floating-shape.hex {
+            clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+            border-radius: 0;
+        }
+
+        @keyframes floatMove {
+            0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) translateX(20px) rotate(120deg); }
+            66% { transform: translateY(20px) translateX(-15px) rotate(240deg); }
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+            50% { transform: translateY(-40px) rotate(180deg); opacity: 0.8; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border-radius: 32px;
+            padding: 60px 50px;
+            text-align: center;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            max-width: 520px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: containerGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerGlow {
+            0% { box-shadow: 0 32px 64px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+            100% { box-shadow: 0 32px 64px rgba(139, 92, 246, 0.3), 0 0 0 1px rgba(168, 85, 247, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+        }
+
+        .website-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 12px;
+        }
+
+        .hex-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8b5cf6, #a855f7, #c084fc);
+            clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: hexRotate 6s linear infinite;
+        }
+
+        @keyframes hexRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .website-name {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .cloudflare-badge {
+            background: linear-gradient(135deg, #f38020, #f5af19);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            display: inline-block;
+            animation: badgePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .status-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #a855f7, #c084fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: iconPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 25px rgba(139, 92, 246, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+
+        .shield {
+            width: 50px;
+            height: 50px;
+            fill: white;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a202c, #4a5568);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 35px;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #a855f7, #c084fc);
+            border-radius: 8px;
+            width: 0%;
+            animation: progress 3.5s ease-in-out forwards;
+            position: relative;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 40px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            30% { width: 25%; }
+            60% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-40px); }
+            100% { transform: translateX(520px); }
+        }
+
+        .verification-steps {
+            text-align: left;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: #2d3748;
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideIn 0.8s ease-out forwards;
+            font-weight: 500;
+        }
+
+        .step:last-child { margin-bottom: 0; }
+        .step:nth-child(1) { animation-delay: 0.6s; }
+        .step:nth-child(2) { animation-delay: 1.2s; }
+        .step:nth-child(3) { animation-delay: 1.8s; }
+        .step:nth-child(4) { animation-delay: 2.4s; }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .step-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .step-icon.pending {
+            background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon.loading {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            animation: iconSpin 2s linear infinite;
+            box-shadow: 0 4px 8px rgba(139, 92, 246, 0.4);
+        }
+
+        @keyframes iconSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .checkmark {
+            width: 12px;
+            height: 12px;
+            fill: white;
+        }
+
+        .spinner {
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .security-badges {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(139, 92, 246, 0.15);
+            color: #6b46c1;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .badge-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            fill: currentColor;
+        }
+
+        .completion-message {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .completion-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .redirect-info {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 25px;
+            font-size: 15px;
+            color: #1e40af;
+            backdrop-filter: blur(15px);
+        }
+
+        .redirect-url {
+            font-weight: 700;
+            color: #8b5cf6;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+
+            .website-name {
+                font-size: 20px;
+            }
+
+            .security-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Success animation */
+        .success-checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 3;
+            stroke: #10b981;
+            stroke-miterlimit: 10;
+            margin: 0 auto 25px;
+            box-shadow: inset 0px 0px 0px #10b981;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+            opacity: 0;
+        }
+
+        .success-checkmark.show {
+            opacity: 1;
+        }
+
+        .success-checkmark .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #10b981;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .success-checkmark .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.15, 1.15, 1);
+            }
+        }
+
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px #10b981;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-elements" id="bgElements"></div>
+    
+    <div class="container">
+        <div class="website-info">
+            <div class="hex-logo"></div>
+            <div class="website-name">HexoNode.com</div>
+        </div>
+        
+        <div class="cloudflare-badge">Protected by Cloudflare</div>
+        
+        <div class="status-icon" id="statusIcon">
+            <svg class="shield" viewBox="0 0 24 24">
+                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10.2V11.2H16.2V16.2H7.8V11.2H9.2V10.2C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.4,8.7 10.4,10.2V11.2H13.6V10.2C13.6,8.7 12.8,8.2 12,8.2Z"/>
+            </svg>
+        </div>
+        
+        <div id="mainContent">
+            <h1>Verifying your connection</h1>
+            <p class="subtitle">Please wait while we ensure secure access to HexoNode.com</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="verification-steps">
+                <div class="step">
+                    <div class="step-icon" id="step1">
+                        <svg class="checkmark" viewBox="0 0 24 24">
+                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                        </svg>
+                    </div>
+                    <span>Verifying browser security</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon loading" id="step2">
+                        <div class="spinner"></div>
+                    </div>
+                    <span>Analyzing traffic patterns</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon pending" id="step3">
+                        <svg class="checkmark" viewBox="0 0 24 24">
+                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                        </svg>
+                    </div>
+                    <span>Processing security challenge</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon pending" id="step4">
+                        <svg class="checkmark" viewBox="0 0 24 24">
+                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                        </svg>
+                    </div>
+                    <span>Finalizing secure connection</span>
+                </div>
+            </div>
+            
+            <div class="security-badges">
+                <div class="security-badge">
+                    <svg class="badge-icon" viewBox="0 0 24 24">
+                        <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z"/>
+                    </svg>
+                    DDoS Protection
+                </div>
+                <div class="security-badge">
+                    <svg class="badge-icon" viewBox="0 0 24 24">
+                        <path d="M18,8A6,6 0 0,0 12,2A6,6 0 0,0 6,8H4A2,2 0 0,0 2,10V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V10A2,2 0 0,0 20,8H18M12,4A4,4 0 0,1 16,8H8A4,4 0 0,1 12,4Z"/>
+                    </svg>
+                    SSL Encryption
+                </div>
+            </div>
+            
+            <p class="info-text">
+                <strong>Security Check in Progress</strong><br>
+                HexoNode.com is protected by advanced security measures to ensure a safe browsing experience and protect against malicious attacks.
+            </p>
+        </div>
+        
+        <div class="completion-message" id="completionMessage">
+            <svg class="success-checkmark" id="successCheck" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="m14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+            
+            <h1 style="background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Verification Complete!</h1>
+            <p class="subtitle">Your secure connection to HexoNode.com has been established.</p>
+            
+            <div class="redirect-info">
+                <strong>✨ Redirecting to HexoNode.com</strong><br>
+                You will be automatically redirected in a few seconds.
+                <div class="redirect-url">→ https://hexonode.com</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create beautiful background elements
+        function createBackgroundElements() {
+            const container = document.getElementById('bgElements');
+            
+            // Create floating hexagonal shapes
+            for (let i = 0; i < 8; i++) {
+                const shape = document.createElement('div');
+                shape.className = 'floating-shape hex';
+                
+                const size = Math.random() * 60 + 40;
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                const duration = Math.random() * 8 + 8;
+                const delay = Math.random() * 4;
+                
+                shape.style.width = size + 'px';
+                shape.style.height = size + 'px';
+                shape.style.left = posX + 'px';
+                shape.style.top = posY + 'px';
+                shape.style.background = `linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1))`;
+                shape.style.animationDuration = duration + 's';
+                shape.style.animationDelay = delay + 's';
+                
+                container.appendChild(shape);
+            }
+            
+            // Create floating particles
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 8 + 4;
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                const duration = Math.random() * 6 + 6;
+                const delay = Math.random() * 3;
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = posX + 'px';
+                particle.style.top = posY + 'px';
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = delay + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Enhanced verification simulation with smooth background transitions
+        function runVerification() {
+            const steps = [
+                { id: 'step1', delay: 800 },
+                { id: 'step2', delay: 1800 },
+                { id: 'step3', delay: 2800 },
+                { id: 'step4', delay: 4000 }
+            ];
+            
+            // Smooth background gradient transitions
+            let gradientPhase = 0;
+            const gradientInterval = setInterval(() => {
+                gradientPhase++;
+                const body = document.body;
+                
+                // Reset all classes
+                body.classList.remove('gradient-2', 'gradient-3');
+                
+                if (gradientPhase === 1) {
+                    body.classList.add('gradient-2');
+                } else if (gradientPhase === 2) {
+                    body.classList.remove('gradient-2');
+                    body.classList.add('gradient-3');
+                } else if (gradientPhase >= 3) {
+                    body.classList.remove('gradient-3');
+                    gradientPhase = 0;
+                }
+            }, 3000); // Change every 3 seconds for smooth transitions
+            
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    const stepElement = document.getElementById(step.id);
+                    stepElement.className = 'step-icon';
+                    stepElement.innerHTML = `
+                        <svg class="checkmark" viewBox="0 0 24 24">
+                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                        </svg>
+                    `;
+                    
+                    // Start loading next step
+                    if (index < steps.length - 1) {
+                        const nextStep = document.getElementById(steps[index + 1].id);
+                        nextStep.className = 'step-icon loading';
+                        nextStep.innerHTML = '<div class="spinner"></div>';
+                    }
+                }, step.delay);
+            });
+            
+            // Show completion with enhanced animation
+            setTimeout(() => {
+                clearInterval(gradientInterval); // Stop background transitions
+                const mainContent = document.getElementById('mainContent');
+                mainContent.style.opacity = '0';
+                mainContent.style.transform = 'translateY(-30px) scale(0.95)';
+                
+                setTimeout(() => {
+                    mainContent.style.display = 'none';
+                    const completion = document.getElementById('completionMessage');
+                    completion.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        completion.classList.add('show');
+                        document.getElementById('successCheck').classList.add('show');
+                        document.getElementById('statusIcon').style.display = 'none';
+                    }, 100);
+                }, 400);
+            }, 5200);
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createBackgroundElements();
+            runVerification();
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            document.getElementById('bgElements').innerHTML = '';
+            createBackgroundElements();
+        });
+    </script>
+</body>
+</html>
