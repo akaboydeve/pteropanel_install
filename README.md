@@ -1,3 +1,17 @@
+## Using the installation scripts (ADVANCED)
+
+To use the installation scripts, simply run this command as root. The script will ask you whether you would like to install just the panel, just Wings or both.
+
+```bash
+bash <(curl -s https://pterodactyl-installer.se)
+```
+
+ufw allow script
+```bash
+curl -sL https://raw.githubusercontent.com/akaboydeve/pteropanel_install/refs/heads/main/ufw_allow_ports.sh | sudo bash
+```
+
+
 # pteropanel_install by akash
 some information and helps about panel
 
@@ -13,11 +27,5 @@ This is the simple pterodactyl node/wings install sctipt (EASY)
 bash <(curl -s https://bit.ly/aka_wings)
 ```
 
-## Using the installation scripts (ADVANCED)
 
-To use the installation scripts, simply run this command as root. The script will ask you whether you would like to install just the panel, just Wings or both.
-
-```bash
-bash <(curl -s https://pterodactyl-installer.se)
-```
 
