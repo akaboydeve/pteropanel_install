@@ -8,7 +8,7 @@ bash <(curl -s https://pterodactyl-installer.se)
 
 ufw allow script
 ```bash
-curl -sL https://raw.githubusercontent.com/akaboydeve/pteropanel_install/refs/heads/main/ufw_allow_ports.sh | sudo bash
+bash <(curl -s https://raw.githubusercontent.com/akaboydeve/pteropanel_install/refs/heads/main/ufw_allow_ports.sh)
 ```
 
 
