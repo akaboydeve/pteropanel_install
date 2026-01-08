@@ -158,7 +158,7 @@ sudo iptables -t nat -A PREROUTING -d 136.243.106.138 -p tcp --dport 4408 -j DNA
 SSH mapping loop:
 
 ```bash
-for i in $(seq 0 19); do
+for i in $(seq 0 190); do
   port=$((222 + i))
   vm_ip="10.10.10.$((10 + i))"
   sudo iptables -t nat -A PREROUTING -d 136.243.106.138 -p tcp --dport "${port}" -j DNAT --to-destination "${vm_ip}:22"
@@ -168,7 +168,7 @@ done
 RDP mapping loop:
 
 ```bash
-for i in $(seq 0 19); do
+for i in $(seq 0 190); do
   port=$((4389 + i))
   vm_ip="10.10.10.$((10 + i))"
   sudo iptables -t nat -A PREROUTING -d 136.243.106.138 -p tcp --dport "${port}" -j DNAT --to-destination "${vm_ip}:3389"
